@@ -11,6 +11,8 @@
 	     <th> Id </th>
 		 <th> Name </th>
 		 <th> Brand </th>
+		 <th>Action</th>
+		 <th>Action</th>
 	   </tr>
 <?php
 
@@ -19,6 +21,9 @@
 	   echo "<td>".$row["id"]."</td>";
 	   echo "<td>".$row["name"]."</td>";
 	   echo "<td>".$row["brand"]."</td>";
+	   
+	   echo '<td><button><a href="producttwo.php" >Edit</a></button></td>';
+	   echo '<td><button><a href="third.php">Delete</a></button></td>';
 	   echo "</tr>";
    }
 ?>

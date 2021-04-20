@@ -1,5 +1,6 @@
 <?php
    require_once "db.php";
+   require_once "control.php";
    function insertUser($id,$username,$password){
 	 $query="insert into product values ('$id','$username','$password')";
 	 execute($query);//data base er sathe conncet kore then insert kore
@@ -12,34 +13,34 @@
 		<?php
 		    $name="";
 			$err_name="";
-			$uname="";
-			$err_uname="";
+			$id="";
+			$err_id="";
 			$bname="";
 			$err_bname="";
 			
 			$hasError=false;
 			
 		    if($_SERVER['REQUEST_METHOD'] == "POST"){
-				insertUser($_POST["uname"],$_POST["bname"],$_POST["name"]);
-				if(empty($_POST["uname"])){
+				insertUser($_POST["id"],$_POST["bname"],$_POST["name"]);
+				if(empty($_POST["id"])){
 					$err_uname="*Product Id Required";
 					$hasError=true;
 				}
-				else if(strlen($_POST["uname"]) < 4){
-					$err_uname="*Product id should be at least 2 characters";
+				else if(strlen($_POST["id"]) < 3){
+					$err_id="*Product id should be at least 3 characters";
 					$hasError=true;
 				}
-				else if(strpos($_POST["uname"]," ")){
-					$err_uname="*Space is not allowed";
+				else if(strpos($_POST["id"]," ")){
+					$err_id="*Space is not allowed";
                     $hasError=true;
 
 				}
-				else if(!is_numeric($_POST["uname"])){
-					$err_uname="*Only numerical value is accepted";
+				else if(!is_numeric($_POST["id"])){
+					$err_id="*Only numerical value is accepted";
 					$hasError=true;
 				}
 				else{
-					$uname=htmlspecialchars($_POST["uname"]);
+					$id=htmlspecialchars($_POST["id"]);
 				}
 				if(empty($_POST["name"])){
 					$err_name="*Name Required";
@@ -71,8 +72,9 @@
 				<table>
 				
                     <tr>
-						<td><span> Product Name </span></td> 
-						<td>: <input type="text" value="<?php echo $name;?>" name="name">
+						<td><span> Name </span></td>                                                           
+						<td>: <input type="text" onfocusout ="checkUsername(this)" value="<?php echo $name;?>" name="name">  
+                        <span id="err_username"></span>						
 						<span><?php echo $err_name;?></span></td>
 						
 					</tr>
@@ -85,29 +87,8 @@
 					
 					<tr>
 						<td><span> Id </span></td> 
-						<td>: <input type="text" value="<?php echo $uname;?>" name="uname">
-						<span><?php echo $err_uname;?></span></td>
-					</tr>
-					
-					
-				
-					
-					
-					<tr>
-					    <td><span>Catagory Name </span></td> 
-						<td>:
-						  <select>
-								<option>Catagory</option>
-								
-								<?php
-								    $month = array("Male","Female","Child");
-									foreach($month as $v){
-										echo "<option>$v</option>";
-									}
-								?>
-							</select>
-						
-						</td>
+						<td>: <input type="text" value="<?php echo $id;?>" name="id">
+						<span><?php echo $err_id;?></span></td>
 					</tr>
 					
 					
@@ -126,3 +107,26 @@
 		
 	</body>
 </html>
+
+<script>
+function checkUsername(control){
+	var username= control.value;
+	//ajax
+	var xhttp= new XMLHttpRequest();
+	xhttp.onreadystatechange= function(){
+		if(this.readyState==4 && this.status== 200){
+			//when server respond
+			var rsp= this.responseText;
+			if(rsp== "true"){
+				document.getElementById("err_username").innerHTML= "Valid";
+			}
+			else{
+				document.getElementById("err_username").innerHTML= "Not Valid";
+			}
+		}
+	}
+	xhttp.open("GET","check-username.php?name="+username,true);
+	xhttp.send();
+}
+</script>
+

@@ -1,5 +1,6 @@
 <?php
    require_once "db.php";
+   require_once "controlt.php";
    function insertUser($password,$name,$uname,$phone,$email){
 	 $query="insert into string values ('$password','$name','$uname','$phone','$email')";
 	 execute($query);
@@ -21,20 +22,21 @@
 			$err_email="";
 			$phone="";
 			$err_phone="";
-			$ad="";
-			$err_ad="";
+			$id ="";
+			$err_id="";
 			$hasError=false;
+
 			
 			
 		    if($_SERVER['REQUEST_METHOD'] == "POST"){
 				insertUser($_POST["pass"],$_POST["name"],$_POST["uname"],$_POST["phone"] ,$_POST["email"]);
-				$s= strpos($_POST["email"],"@");
+			    $s= strpos($_POST["email"],"@");
 				if(empty($_POST["uname"])){
 					$err_uname="*Username Required";
 					$hasError=true;
 				}
-				else if(strlen($_POST["uname"]) < 4){
-					$err_uname="*Username should be at least 4 characters";
+				else if(strlen($_POST["uname"]) < 3){
+					$err_uname="*Username should be at least 2 characters";
 					$hasError=true;
 				}
 				else if(strpos($_POST["uname"]," ")){
@@ -60,12 +62,15 @@
 					$err_password="*Password should be at least 4 characters";
 					$hasError=true;
 				}
-				/*else if(ctype_upper($_POST["pass"])==true || ctype_lower($_POST["pass"])==true ){ 
-					$err_password="*Characters should contain combination of uppercase and lowercase";
-					$hasError=true;
-				}*/
 				else{
 					$password=$_POST["pass"];
+				}
+				if(empty($_POST["id"])){
+					$err_id = "*Id Required";
+					$hasError=true;
+				}
+				else{
+					$id=$_POST["id"];
 				}
 				if(empty($_POST["email"])){
 					$err_email="*Email address required";
@@ -102,14 +107,15 @@
 	
 		<fieldset>
 			
-			<center><legend><h1>Admin Registration</h1></legend></center>
+			<center><legend><h1> Registration </h1></legend></center>
 			<center>
 			<form action="" method="post">
 				<table>
 					
 					<tr>
 						<td><span> Name</span></td> 
-						<td>: <input type="text" value="<?php echo $name;?>" name="name">
+						<td>: <input type="text" onfocusout ="checkUsername(this)" value="<?php echo $name;?>" name="name">
+						 <span id="err_username"></span>	
 						<span><?php echo $err_name;?></span></td>
 						
 					</tr>
@@ -148,11 +154,6 @@
 						<span><?php echo $err_phone;?></span></td>
 					</tr>
 					
-					<tr>
-						<td><span>Gender</span></td>
-						<td>:<input type="radio" value="Male" name="gender">Male<input type="radio" value="Female" name="gender">Female</td>
-					</tr>
-					
 					
 					<tr>
 						<td align="center" colspan="2"><input type="submit" name="submit" value="register"></td>
@@ -164,6 +165,27 @@
 			</form>
 			</center>
 		</fieldset>
-		
 	</body>
 </html>
+
+<script>
+function checkUsername(controlt){
+	var username= controlt.value;
+	//ajax
+	var xhttp= new XMLHttpRequest();
+	xhttp.onreadystatechange= function(){
+		if(this.readyState == 4 && this.status == 200){
+			//when server respond
+			var rsp= this.responseText;
+			if(rsp== "true"){
+				document.getElementById("err_username").innerHTML= "Valid";
+			}
+			else{
+				document.getElementById("err_username").innerHTML= "Not Valid";
+			}
+		}
+	}
+	xhttp.open("GET","check-usernametwo.php?name="+username,true);
+	xhttp.send();
+}
+</script>
