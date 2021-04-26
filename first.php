@@ -1,6 +1,6 @@
 <?php
-   require_once "db.php";
-   require_once "controlt.php";
+   require_once "DB/db.php";
+   require_once "CN/controlt.php";
    function insertUser($password,$name,$uname,$phone,$email){
 	 $query="insert into string values ('$password','$name','$uname','$phone','$email')";
 	 execute($query);
@@ -171,13 +171,11 @@
 <script>
 function checkUsername(controlt){
 	var username= controlt.value;
-	//ajax
 	var xhttp= new XMLHttpRequest();
 	xhttp.onreadystatechange= function(){
 		if(this.readyState == 4 && this.status == 200){
-			//when server respond
 			var rsp= this.responseText;
-			if(rsp== "true"){
+			if(rsp == "true"){
 				document.getElementById("err_username").innerHTML= "Valid";
 			}
 			else{

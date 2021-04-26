@@ -1,5 +1,6 @@
 <?php
-   require_once "controlt.php";
+   require_once "DB/db.php";
+   require_once "CN/controlt.php";
 ?>
 
 

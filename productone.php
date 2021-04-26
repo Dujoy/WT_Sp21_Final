@@ -1,6 +1,6 @@
 <?php
-   require_once "db.php";
-   require_once "control.php";
+   require_once "DB/db.php";
+   require_once "CN/control.php";
    function insertUser($id,$username,$password){
 	 $query="insert into product values ('$id','$username','$password')";
 	 execute($query);//data base er sathe conncet kore then insert kore
@@ -23,7 +23,7 @@
 		    if($_SERVER['REQUEST_METHOD'] == "POST"){
 				insertUser($_POST["id"],$_POST["bname"],$_POST["name"]);
 				if(empty($_POST["id"])){
-					$err_uname="*Product Id Required";
+					$err_id="*Product Id Required";
 					$hasError=true;
 				}
 				else if(strlen($_POST["id"]) < 3){
@@ -110,14 +110,12 @@
 
 <script>
 function checkUsername(control){
-	var username= control.value;
-	//ajax
+	var username = control.value;
 	var xhttp= new XMLHttpRequest();
 	xhttp.onreadystatechange= function(){
-		if(this.readyState==4 && this.status== 200){
-			//when server respond
+		if(this.readyState==4 && this.status == 200){
 			var rsp= this.responseText;
-			if(rsp== "true"){
+			if(rsp == "true"){
 				document.getElementById("err_username").innerHTML= "Valid";
 			}
 			else{

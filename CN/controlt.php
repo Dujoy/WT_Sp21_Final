@@ -1,5 +1,5 @@
 <?php
-require_once "db.php";
+require_once "DB/db.php";
 		    $name="";
 			$err_name="";
 			$uname="";
@@ -95,9 +95,9 @@ function insertCustomer($name,$username ,$password ,$email , $phone)
 	execute($query);
 	header("Location: showpro.php");
 }
-function updateCustomer($id , $name)
+function updateCustomer($id , $name, $email)
 {
-	$query="update string set name='$name'where password='$id'";
+	$query="update string set name='$name',email = '$email'where password='$id'";
 	execute($query);
 	header("Location: showpro.php");
 }
@@ -136,6 +136,5 @@ function checkUsernameValidity($username){
 	}
 	return "true";
 }
-
 
 ?>

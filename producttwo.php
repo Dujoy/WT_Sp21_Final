@@ -1,5 +1,6 @@
 <?php
-   require_once "control.php";
+   require_once "DB/db.php";
+   require_once "CN/control.php";
 ?>
 
 
@@ -63,8 +64,9 @@
 					
 					
 					<tr>
-						<td><span>Name </span></td> 
-						<td>: <input type="text" value="<?php echo $name;?>" name="name">
+						<td><span> Name </span></td> 
+						<td>: <input type="text" onfocusout ="checkUsername(this)" value="<?php echo $name;?>" name="name">
+						<span id="err_username"></span>	
 						<span><?php echo $err_name;?></span></td>
 						
 					</tr>
@@ -82,3 +84,22 @@
 		
 	</body>
 </html>
+<script>
+function checkUsername(control){
+	var username = control.value;
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange= function(){
+		if(this.readyState == 4 && this.status== 200){
+			var rsp= this.responseText;
+			if(rsp== "true"){
+				document.getElementById("err_username").innerHTML= "Valid";
+			}
+			else{
+				document.getElementById("err_username").innerHTML= "Not Valid";
+			}
+		}
+	}
+	xhttp.open("GET","check-username.php?name="+username,true);
+	xhttp.send();
+}
+</script>

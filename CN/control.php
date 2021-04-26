@@ -1,9 +1,9 @@
 <?php
-require_once "db.php";
+require_once "DB/db.php";
 
 //validation
 			
-		   $name="";
+		    $name="";
 			$err_name="";
 			$id="";
 			$err_id="";
@@ -53,7 +53,7 @@ require_once "db.php";
 					$bname=htmlspecialchars($_POST["bname"]);
 				}
 				if(!$hasError){
-			        insertCustomer($_POST["id"],$_POST["name"],$_POST["bname"]);
+			        insertCustomer($_POST["id"],$_POST["bname"],$_POST["name"]);
 				}
 			}
 				
@@ -62,7 +62,7 @@ require_once "db.php";
 	//controller
 
 
-function insertCustomer($name,$username ,$password)
+function insertCustomer($name, $username ,$password)
 {
 	$query="insert into product values(NULL,'$name','$username','$password')";
 	execute($query);
@@ -102,7 +102,7 @@ function getAllCustomers()
 }
 
 function checkUsernameValidity($username){
-	$query="select * from product where name='$username'";
+	$query="select * from product where brand='$username'";
 	$result=get($query);
 	if(count($result)>0){
 		return "false";
